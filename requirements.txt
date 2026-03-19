@@ -1,0 +1,7 @@
+flask>=3.0.0
+requests>=2.31.0
+werkzeug>=3.0.0
+# Optional document extractors (install what you need):
+# pdfplumber          # PDF extraction (recommended)
+# pypdf               # PDF extraction (fallback)
+# python-docx         # DOCX extraction
