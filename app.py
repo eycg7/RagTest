@@ -1,7 +1,7 @@
 import os
 import json
 import requests
-from flask import Flask, request, jsonify, render_template_string
+from flask import Flask, request, jsonify, render_template_string, send_file
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -356,6 +356,19 @@ def summarize():
     finally:
         if os.path.exists(filepath):
             os.remove(filepath)
+
+
+@app.route('/download')
+def download_zip():
+    import zipfile
+    zip_path = '/tmp/RagTest.zip'
+    project_dir = os.path.dirname(os.path.abspath(__file__))
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for fname in ('app.py', 'requirements.txt', 'README.md'):
+            fpath = os.path.join(project_dir, fname)
+            if os.path.exists(fpath):
+                zf.write(fpath, fname)
+    return send_file(zip_path, as_attachment=True, download_name='RagTest.zip')
 
 
 if __name__ == '__main__':
